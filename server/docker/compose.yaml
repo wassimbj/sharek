@@ -1,0 +1,40 @@
+# For Development
+
+version: "3.6"
+
+services:
+  sharek_db:
+    image: postgres
+    restart: always
+    # hostname: localhost
+    ports: 
+      - 5432:5432
+    container_name: sharek.db
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: sharek
+      POSTGRES_USER: devuser
+
+  sharek_server:
+    # image: myserver:latest
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.server
+    container_name: sharek.server
+    ports: 
+      - 1234:1234
+    # user: "197609:197609"
+    # restart: always
+    volumes:
+      - ../:/go/src/app
+    depends_on:
+      - sharek_db      
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    container_name: adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: sharek_db

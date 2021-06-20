@@ -1,0 +1,21 @@
+FROM golang:1.16
+
+WORKDIR /go/src/app
+
+# copy the needed packges and install them
+COPY go.mod go.sum ./
+RUN go get -d -v ./...
+RUN go install -v ./...
+
+# copy the rest of code and build it
+COPY . .
+
+RUN ["go", "get", "github.com/githubnemo/CompileDaemon"]
+
+# CompileDaemon to listen for changes
+CMD CompileDaemon -command="./sharek.server" -polling=true
+
+# RUN go build -o /server .
+# CMD ["/server"]
+
+EXPOSE 1234
