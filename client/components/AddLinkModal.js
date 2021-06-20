@@ -1,9 +1,20 @@
 import axi from "config/axios";
-import { Box, Button, Flex, Layer, Modal, Spinner, TextField } from "gestalt";
+import {
+  Box,
+  Button,
+  Flex,
+  Layer,
+  Modal,
+  Spinner,
+  TextField,
+  Toast,
+} from "gestalt";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
+import { Popup } from "./Popup";
 
-export default function AddLinkModal({ onDismiss }) {
+export default function AddLinkModal({ onDismiss, onSuccess }) {
   const state = {
     title: null,
     url: null,
@@ -21,18 +32,10 @@ export default function AddLinkModal({ onDismiss }) {
       ...link,
       [name]: val,
     });
-    //  state[name] = val;
   };
 
   const mutation = useMutation((data) => axi.post("/link/create", link));
 
-  //   if(!mutation.isLoading && mutation.isSuccess){
-  //   setLink({
-  //      title: '',
-  //      url: '',
-  //      category: ''
-  //   })
-  //   }
   useEffect(() => {
     if (mutation.isSuccess) {
       setLink({
@@ -40,8 +43,11 @@ export default function AddLinkModal({ onDismiss }) {
         url: "",
         category: "",
       });
+      toast.success("Succes, the link is shared")
+      onSuccess()
     }
   }, [mutation.isSuccess]);
+
   return (
     <Layer>
       <Modal
@@ -72,6 +78,13 @@ export default function AddLinkModal({ onDismiss }) {
         size="sm"
       >
         <Box paddingX={8}>
+          {mutation.isError && (
+            <Popup
+              error={true}
+              msg="Something went wrong, we will fix it soon"
+            />
+          )}
+
           <Box marginBottom={8}>
             <TextField
               id="title"

@@ -4,10 +4,11 @@ import cn from "classnames";
 import Image from "next/image";
 import { Dropdown, Flex, IconButton, Icon, Layer } from "gestalt";
 import AddLinkModal from "./AddLinkModal";
+import { Popup } from "./Popup";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [openAddLink, setOpenAddLink] = useState(false)
+  const [openAddLink, setOpenAddLink] = useState(false);
   const anchorRef = useRef(null);
 
   return (
@@ -78,7 +79,12 @@ export default function Header() {
         </div>
       </header>
       {openAddLink && (
-        <AddLinkModal onDismiss={() => setOpenAddLink(false)} />
+        <AddLinkModal
+          onDismiss={() => setOpenAddLink(false)}
+          onSuccess={() => {
+            setOpenAddLink(false)
+          }}
+        />
       )}
     </>
   );

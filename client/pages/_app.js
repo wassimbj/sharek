@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from 'react-query'
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }) {
             content="A Next.js starter styled using Tailwind CSS."
           />
         </Head>
-
+        <Toaster />
         <Component {...pageProps} />
       </Layout>
     </QueryClientProvider>

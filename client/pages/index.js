@@ -1,7 +1,15 @@
+import axi from "config/axios";
+import { Spinner } from "gestalt";
 import Image from "next/image";
 import { ExternalLink } from "react-feather";
+import { useQuery } from "react-query";
 
 export default function IndexPage() {
+  const { isLoading, isError, data, error }  = useQuery('fetchLinks', () => axi.get('/links'))
+  console.log(isLoading, error, data)
+  if(isLoading){
+    return <Spinner show accessibilityLabel="Loading..." />
+  }
   return (
     <div className="max-w-lg mx-auto">
       <a href="#" className="z-0 relative block hover:bg-gray-50 p-5 shadow mb-5 rounded-lg max-w-full overflow-hidden">
@@ -15,17 +23,5 @@ export default function IndexPage() {
         </div>
       </a>
     </div>
-    //   {/* <Image
-    //     src="/team-of-critters.svg"
-    //     alt="Four one-eyed aliens playing"
-    //     width={576}
-    //     height={429.734}
-    //     priority
-    //   />
-
-    //   <h2 className="p-3 font-bold bg-yellow-300 md:text-2xl">
-    //     Hi! Welcome to your first Next.js site.
-    //   </h2> */}
-    // {/* </div> */}
   );
 }
