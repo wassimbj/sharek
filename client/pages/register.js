@@ -4,10 +4,11 @@ import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 
-export default function Login() {
+export default function Register() {
   // !TODO:  add validation and error messages
-  
+
   const [data, setData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -19,7 +20,7 @@ export default function Login() {
     });
   };
 
-  const handleLogin = useMutation(() => axi.post("/login", data), {
+  const handleLogin = useMutation(() => axi.post("/create", data), {
     onError: (err) => {
       console.log(err.response);
     },
@@ -28,12 +29,21 @@ export default function Login() {
     },
   });
 
-  console.log(data);
   return (
     <div className="bg-white shadow rounded-lg max-w-lg mx-auto p-5 mt-10">
       <span className="block text-center text-2xl mb-5 font-semibold">
-        Login
+        Create Account
       </span>
+      <TextField
+        onChange={({ value }) => handleChange("email", value)}
+        placeholder="wassim"
+        label="Name"
+        //   errorMessage={!data.email ? "write your email" : ""}
+        //  value={value}
+        type="text"
+      />
+      <br />
+      <br />
       <TextField
         onChange={({ value }) => handleChange("email", value)}
         placeholder="name@mail.com"

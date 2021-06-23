@@ -27,7 +27,7 @@ func Create(res http.ResponseWriter, req *http.Request) {
 
 	// log.Printf("EMAIL: %s, PASS: %s", userData.Email, userData.Password)
 
-	userId, createFailed := services.CreateUser("wassim", userData.Email, userData.Password)
+	userId, createFailed := services.CreateUser(userData.Name, userData.Email, userData.Password)
 
 	if createFailed != nil {
 		res.WriteHeader(http.StatusInternalServerError)
