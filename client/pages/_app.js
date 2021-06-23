@@ -5,8 +5,12 @@ import Layout from "@components/layout";
 import {
   QueryClient,
   QueryClientProvider,
+  useQuery,
 } from 'react-query'
 import { Toaster } from "react-hot-toast";
+import UserAuthContext from '../contexts/UserAuthContext'
+import axi from "config/axios";
+
 
 const queryClient = new QueryClient();
 

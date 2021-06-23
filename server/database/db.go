@@ -8,7 +8,9 @@ import (
 	"sharek.server/config"
 )
 
-func Init() *gorm.DB {
+var db *gorm.DB
+
+func init() {
 	// postgres://<USER>:<PASSWORD>@<HOST>:5432/<DB_NAME>
 	DSN := fmt.Sprintf("postgres://%s:%s@%s:5432/%s",
 		config.GetEnv("DB_USER"),
@@ -17,17 +19,19 @@ func Init() *gorm.DB {
 		config.GetEnv("DB_NAME"))
 
 	var pg = postgres.Open(DSN)
-	db, err := gorm.Open(pg, &gorm.Config{
+	var err error
+	db, err = gorm.Open(pg, &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
 		recover()
 		panic("failed to connect database")
 	}
-
 	// migrate database schema
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Link{})
+}
 
+func DB() *gorm.DB {
 	return db.Debug()
 }

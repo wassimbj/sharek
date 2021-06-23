@@ -13,12 +13,12 @@ func UserExists(email string, id uint) (database.User, int64) {
 	var user database.User
 	var affectedRows int64
 	if email != "" && id == 0 {
-		result := database.Init().Select("id", "password").Where(&database.User{
+		result := database.DB().Select("id", "password").Where(&database.User{
 			Email: email,
 		}).First(&user)
 		affectedRows = result.RowsAffected
 	} else {
-		result := database.Init().Select("id").Where(&database.User{
+		result := database.DB().Select("id").Where(&database.User{
 			ID: id,
 		}).First(&user)
 		affectedRows = result.RowsAffected
@@ -40,7 +40,7 @@ func CreateUser(name string, email string, password string) (uint, error) {
 		Password: string(hashedPass),
 	}
 
-	result := database.Init().Create(&newUser)
+	result := database.DB().Create(&newUser)
 
 	if result.Error != nil {
 		return 0, result.Error
@@ -64,8 +64,12 @@ func LoginUser(email string, password string) (uint, error) {
 	return user.ID, nil
 }
 
-func GetLoggedInUser(userId interface{}) database.User {
+func GetLoggedInUser(userId interface{}) (database.User, bool) {
 	var user database.User
-	database.Init().Select("id", "name").Where(&database.User{ID: userId.(uint)}).First(&user)
-	return user
+
+	result := database.DB().Select("id", "name").Where(&database.User{ID: userId.(uint)}).First(&user)
+	if result.RowsAffected == 0 {
+		return user, false
+	}
+	return user, true
 }

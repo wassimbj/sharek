@@ -12,7 +12,6 @@ import {
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
-import { Popup } from "./Popup";
 
 export default function AddLinkModal({ onDismiss, onSuccess }) {
   const state = {
@@ -78,13 +77,6 @@ export default function AddLinkModal({ onDismiss, onSuccess }) {
         size="sm"
       >
         <Box paddingX={8}>
-          {mutation.isError && (
-            <Popup
-              error={true}
-              msg="Something went wrong, we will fix it soon"
-            />
-          )}
-
           <Box marginBottom={8}>
             <TextField
               id="title"

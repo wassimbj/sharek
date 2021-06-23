@@ -81,7 +81,16 @@ func Login(res http.ResponseWriter, req *http.Request) {
 
 func LoggedInUser(res http.ResponseWriter, req *http.Request) {
 	userId := config.GetSessionKey("id", req)
-	user := services.GetLoggedInUser(userId)
 
-	utils.Respond(200, user, res)
+	if userId == nil {
+		utils.Respond(200, nil, res)
+		return
+	}
+	user, isLoggedIn := services.GetLoggedInUser(userId)
+
+	if isLoggedIn {
+		utils.Respond(200, user, res)
+		return
+	}
+	utils.Respond(200, nil, res)
 }

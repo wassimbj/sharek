@@ -24,7 +24,7 @@ func SaveSession(vals SessionData, res http.ResponseWriter, req *http.Request) e
 	// {user: { values: { ... } }}
 	session, _ := store.Get(req, "user")
 	// set the values
-	session.Values["id"] = vals
+	session.Values = vals
 	// Save it before we write to the response/return from the handler.
 	err := session.Save(req, res)
 

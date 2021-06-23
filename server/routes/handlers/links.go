@@ -16,7 +16,7 @@ func CreateLink(res http.ResponseWriter, req *http.Request) {
 	body := utils.ReadBody(req.Body)
 	json.Unmarshal([]byte(body), &link)
 
-	result := database.Init().Create(&link)
+	result := database.DB().Create(&link)
 
 	if result.Error != nil {
 		utils.Respond(http.StatusInternalServerError, "Something went wrong", res)
@@ -28,9 +28,16 @@ func CreateLink(res http.ResponseWriter, req *http.Request) {
 
 func Links(res http.ResponseWriter, req *http.Request) {
 	var links []database.Link
-	database.Init().Model(&database.Link{}).Preload("User", func(db *gorm.DB) *gorm.DB {
+	// v := mux.Vars(req)
+	query := req.URL.Query()
+	page, _ := strconv.Atoi(query.Get("page"))
+
+	const LIMIT = 5
+	// time.Sleep(time.Second * 3)
+
+	database.DB().Model(&database.Link{}).Preload("User", func(db *gorm.DB) *gorm.DB {
 		return db.Select("users.id, users.name")
-	}).Find(&links)
+	}).Offset(page).Limit(LIMIT).Find(&links)
 
 	utils.Respond(200, links, res)
 }
@@ -40,7 +47,7 @@ func UserLinks(res http.ResponseWriter, req *http.Request) {
 	var links []database.Link
 	v := mux.Vars(req)
 	userId, _ := strconv.Atoi(v["id"])
-	database.Init().Model(&database.Link{}).Where(&database.Link{UserID: uint(userId)}).Find(&links)
+	database.DB().Model(&database.Link{}).Where(&database.Link{UserID: uint(userId)}).Find(&links)
 
 	utils.Respond(200, links, res)
 }
