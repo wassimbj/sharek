@@ -1,5 +1,6 @@
 import axi from "config/axios";
-import { Button, TextField } from "gestalt";
+import { Button, Spinner, TextField } from "gestalt";
+import useAuth from "hooks/useAuth";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
@@ -29,13 +30,32 @@ export default function Register() {
     },
   });
 
+  const { isLoading, isLoggedIn } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="mt-10">
+        <Spinner show accessibilityLabel="Loading..." />
+      </div>
+    );
+  }
+
+  if (isLoggedIn) {
+    Router.replace("/");
+    return (
+      <div className="mt-10">
+        <Spinner show accessibilityLabel="Loading..." />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white shadow rounded-lg max-w-lg mx-auto p-5 mt-10">
       <span className="block text-center text-2xl mb-5 font-semibold">
         Create Account
       </span>
       <TextField
-        onChange={({ value }) => handleChange("email", value)}
+        onChange={({ value }) => handleChange("name", value)}
         placeholder="wassim"
         label="Name"
         //   errorMessage={!data.email ? "write your email" : ""}
@@ -70,13 +90,13 @@ export default function Register() {
         className={`
          bg-blue-600 rounded-full w-full text-white font-semibold px-5 py-2 block
          ${
-           !data.email || !data.password
+           !data.email || !data.password || !data.name
              ? "opacity-70"
              : "cursor-pointer hover:opacity-80"
          }
       `}
         onClick={() => {
-          if (!data.email || !data.password) {
+          if (!data.email || !data.password || !data.name) {
             return false;
           }
 

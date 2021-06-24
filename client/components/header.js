@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import cn from "classnames";
-import Image from "next/image";
-import { Button, Dropdown, Flex, IconButton } from "gestalt";
+import { Dropdown, Flex, IconButton, Spinner } from "gestalt";
 import AddLinkModal from "./AddLinkModal";
 import Router from "next/router";
 import { useMutation, useQuery } from "react-query";
@@ -19,7 +18,7 @@ export default function Header() {
       return axi.get("/isauth");
     }
   );
-    // console.log(isLoading, isError)
+  // console.log(isLoading, isError)
   const logOut = useMutation(() => axi.post("/logout"), {
     onError: (err, _, __) => {
       console.log("Logging out error: ", err);
@@ -47,19 +46,28 @@ export default function Header() {
             )}
           >
             {isLoading || isError ? (
-              <li className="mx-2">
-                <Link href="/login">
-                  {/* <Button text="Login" color="blue" /> */}
-                  Login
-                </Link>
-              </li>
+              <>
+                <li className="mx-2">
+                  <Spinner show accessibilityLabel="Loading..." size="sm" />
+                </li>
+              </>
             ) : !data.data ? (
-              <li className="mx-2">
-                <Link href="/login">
-                  Login
-                  {/* <Button text="Login" color="blue" /> */}
-                </Link>
-              </li>
+              <>
+                <li className="mx-2">
+                  <Link href="/login">
+                    <span className="cursor-pointer bg-gray-700 text-white text-base px-5 py-1 rounded-full hover:opacity-75">
+                      Login
+                    </span>
+                  </Link>
+                </li>
+                <li className="mx-2">
+                  <Link href="/register">
+                    <span className="cursor-pointer bg-blue-500 text-white text-base px-5 py-1 rounded-full hover:opacity-75">
+                      Register
+                    </span>
+                  </Link>
+                </li>
+              </>
             ) : (
               <>
                 <li className="mx-2 text-white">

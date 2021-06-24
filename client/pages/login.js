@@ -1,12 +1,13 @@
 import axi from "config/axios";
-import { Button, TextField } from "gestalt";
+import { Button, Spinner, TextField } from "gestalt";
+import useAuth from "hooks/useAuth";
 import Router from "next/router";
-import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import React, { useState } from "react";
+import { useMutation, useQuery } from "react-query";
 
 export default function Login() {
   // !TODO:  add validation and error messages
-  
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -28,7 +29,24 @@ export default function Login() {
     },
   });
 
-  console.log(data);
+  const { isLoading, isLoggedIn } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="mt-10">
+        <Spinner show accessibilityLabel="Loading..." />
+      </div>
+    );
+  }
+
+  if (isLoggedIn) {
+    Router.replace("/");
+    return (
+      <div className="mt-10">
+        <Spinner show accessibilityLabel="Loading..." />
+      </div>
+    );
+  }
   return (
     <div className="bg-white shadow rounded-lg max-w-lg mx-auto p-5 mt-10">
       <span className="block text-center text-2xl mb-5 font-semibold">
