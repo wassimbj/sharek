@@ -16,6 +16,8 @@ func CreateLink(res http.ResponseWriter, req *http.Request) {
 	body := utils.ReadBody(req.Body)
 	json.Unmarshal([]byte(body), &link)
 
+	link.Image = utils.GetFavicons(link.Url)
+
 	result := database.DB().Create(&link)
 
 	if result.Error != nil {
@@ -37,7 +39,7 @@ func Links(res http.ResponseWriter, req *http.Request) {
 
 	database.DB().Model(&database.Link{}).Preload("User", func(db *gorm.DB) *gorm.DB {
 		return db.Select("users.id, users.name")
-	}).Offset(page).Limit(LIMIT).Find(&links)
+	}).Offset(page).Limit(LIMIT).Order("links.created_at DESC").Find(&links)
 
 	utils.Respond(200, links, res)
 }

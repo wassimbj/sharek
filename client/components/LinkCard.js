@@ -1,7 +1,8 @@
 import React from "react";
 import { ExternalLink } from "react-feather";
 
-export default function LinkCard({ url, title, categories }) {
+export default function LinkCard({ image, url, title, categories }) {
+  const randomColor = Math.round(0xffffff * Math.random()).toString(16);
   return (
     <a
       href={url}
@@ -12,11 +13,26 @@ export default function LinkCard({ url, title, categories }) {
         size={15}
       />
       <div className="flex items-center flex-row overflow-hidden">
-        <span
+        {!image ? (
+          <span
+            style={{
+              minWidth: "50px",
+              background: `#${randomColor}`,
+            }}
+            className="w-20 h-20 right-3 rounded-lg align-baseline block min-w-max"
+          ></span>
+        ) : (
+          <img
+            src={image}
+            style={{ minWidth: "50px" }}
+            className="w-20 h-20 border rounded-lg inline-block align-baseline object-cover min-w-max right-3"
+          />
+        )}
+        {/* <span
           style={{ minWidth: "50px" }}
           className="w-12 h-12 right-3 rounded-lg align-baseline block min-w-max bg-purple-500"
-        ></span>
-        <div className="ml-2">
+        ></span> */}
+        <div className="ml-4">
           <p className="font-semibold text-lg truncate">{title}</p>
           {categories.split(",").map((category) => (
             <span className="mr-1 bg-gray-100 text-gray-600 mt-1 text-sm px-3 py-1 inline-block rounded-full">

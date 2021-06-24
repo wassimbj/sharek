@@ -55,6 +55,7 @@ export default function IndexPage() {
           categories={link.category}
           title={link.title}
           url={link.url}
+          image={link.image}
         />
       ))}
 
