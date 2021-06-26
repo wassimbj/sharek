@@ -92,7 +92,7 @@ export default function Header() {
                         onDismiss={() => setOpen(false)}
                       >
                         <Dropdown.Link
-                          href={`/u/${data.data.id}`}
+                          href={`/user/${data.data.id}`}
                           selected={false}
                           option={{ label: "Profile" }}
                         />

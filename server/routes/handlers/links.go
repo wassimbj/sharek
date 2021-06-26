@@ -49,6 +49,7 @@ func UserLinks(res http.ResponseWriter, req *http.Request) {
 	var links []database.Link
 	v := mux.Vars(req)
 	userId, _ := strconv.Atoi(v["id"])
+	// log.Print(userId)
 	database.DB().Model(&database.Link{}).Where(&database.Link{UserID: uint(userId)}).Find(&links)
 
 	utils.Respond(200, links, res)

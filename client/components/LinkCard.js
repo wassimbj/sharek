@@ -6,6 +6,7 @@ export default function LinkCard({ image, url, title, categories }) {
   return (
     <a
       href={url}
+      target="_blank"
       className="z-0 relative bg-white block hover:bg-gray-50 p-5 shadow mb-5 rounded-lg max-w-full overflow-hidden"
     >
       <ExternalLink
@@ -16,7 +17,7 @@ export default function LinkCard({ image, url, title, categories }) {
         {!image ? (
           <span
             style={{
-              minWidth: "50px",
+              minWidth: "80px",
               background: `#${randomColor}`,
             }}
             className="w-20 h-20 right-3 rounded-lg align-baseline block min-w-max"
@@ -24,21 +25,21 @@ export default function LinkCard({ image, url, title, categories }) {
         ) : (
           <img
             src={image}
-            style={{ minWidth: "50px" }}
+            style={{ minWidth: "80px" }}
             className="w-20 h-20 border rounded-lg inline-block align-baseline object-cover min-w-max right-3"
           />
         )}
-        {/* <span
-          style={{ minWidth: "50px" }}
-          className="w-12 h-12 right-3 rounded-lg align-baseline block min-w-max bg-purple-500"
-        ></span> */}
-        <div className="ml-4">
+        <div className="ml-4 overflow-hidden">
           <p className="font-semibold text-lg truncate">{title}</p>
-          {categories.split(",").map((category) => (
-            <span className="mr-1 bg-gray-100 text-gray-600 mt-1 text-sm px-3 py-1 inline-block rounded-full">
-              {category}
-            </span>
-          ))}
+          {categories
+            .split(",")
+            .map((category) =>
+              !category ? null : (
+                <span className="mr-1 bg-gray-100 text-gray-600 mt-1 text-sm px-3 py-1 inline-block rounded-full">
+                  {category}
+                </span>
+              )
+            )}
         </div>
       </div>
     </a>
