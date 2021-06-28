@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
+	"sharek.server/config"
 	"sharek.server/database"
 	"sharek.server/utils"
 )
@@ -16,6 +17,7 @@ func CreateLink(res http.ResponseWriter, req *http.Request) {
 	body := utils.ReadBody(req.Body)
 	json.Unmarshal([]byte(body), &link)
 
+	link.UserID = config.GetSessionKey("id", req).(uint)
 	link.Image = utils.GetFavicons(link.Url)
 
 	result := database.DB().Create(&link)

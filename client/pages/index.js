@@ -36,7 +36,7 @@ export default function IndexPage() {
       </div>
     );
   }
-  // console.log(data);
+  console.log(data);
 
   if (isError) {
     return (
