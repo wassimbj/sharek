@@ -29,7 +29,6 @@ export default function IndexPage() {
     }
   }, [data, page]);
 
-
   if (isLoading) {
     return (
       <div className="py-14 px-2">
@@ -37,12 +36,23 @@ export default function IndexPage() {
       </div>
     );
   }
+  // console.log(data);
 
   if (isError) {
     return (
       <div className="py-20 px-2">
-        <p className="p-2 bg-red-50 text-red-600 rounded-md">
+        <p className="p-2 bg-red-50 border-red-300 text-red-600 rounded-md">
           Something went wrong, please come back later...
+        </p>
+      </div>
+    );
+  }
+
+  if (data.data === null) {
+    return (
+      <div className="py-20 px-2">
+        <p className="p-2 bg-blue-50 border border-blue-300 text-blue-600 rounded-md">
+          No links found
         </p>
       </div>
     );
@@ -54,6 +64,8 @@ export default function IndexPage() {
         <LinkCard
           categories={link.category}
           title={link.title}
+          userName={link.user.name}
+          userId={link.user.id}
           url={link.url}
           image={link.image}
         />

@@ -35,11 +35,10 @@ func Links(res http.ResponseWriter, req *http.Request) {
 	page, _ := strconv.Atoi(query.Get("page"))
 
 	const LIMIT = 5
-	// time.Sleep(time.Second * 3)
-
 	database.DB().Model(&database.Link{}).Preload("User", func(db *gorm.DB) *gorm.DB {
 		return db.Select("users.id, users.name")
-	}).Offset(page).Limit(LIMIT).Order("links.created_at DESC").Find(&links)
+	}).Order("links.created_at DESC").Offset(page).Limit(LIMIT).Find(&links)
+	// .Order("links.created_at DESC")
 
 	utils.Respond(200, links, res)
 }
@@ -50,7 +49,7 @@ func UserLinks(res http.ResponseWriter, req *http.Request) {
 	v := mux.Vars(req)
 	userId, _ := strconv.Atoi(v["id"])
 	// log.Print(userId)
-	database.DB().Model(&database.Link{}).Where(&database.Link{UserID: uint(userId)}).Find(&links)
+	database.DB().Model(&database.Link{}).Where(&database.Link{UserID: uint(userId)}).Order("created_at DESC").Find(&links)
 
 	utils.Respond(200, links, res)
 }
