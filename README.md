@@ -1,5 +1,4 @@
 ## Sharek - Share useful links
----
 
 ### Stack
  - Go
